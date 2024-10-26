@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+message GetCitiesRequest {
+  string messageType = 1;
+  string messageId = 2;
+  double latitude = 3;
+  double longitude = 4;
+  double radius = 5;
+}
+
+message GetCitiesResponse {
+  string messageType = 1;
+  string messageId = 2;
+  repeated City cities = 3;
+}
+
+message City {
+  string name = 1;
+  double latitude = 2;
+  double longitude = 3;
+}
