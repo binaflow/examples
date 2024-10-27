@@ -1,13 +1,11 @@
 package com.github.binaflow.citiespickerjavaspring;
 
+import com.github.binaflow.annotation.Controller;
+import com.github.binaflow.annotation.MessageMapping;
 import com.github.binaflow.citiespickerjavaspring.dto.GetCitiesRequest;
 import com.github.binaflow.citiespickerjavaspring.dto.GetCitiesResponse;
-import dev.toliyansky.binaflow.annotation.Controller;
-import dev.toliyansky.binaflow.annotation.MessageMapping;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class CitiesController {
@@ -16,7 +14,6 @@ public class CitiesController {
 
     @MessageMapping
     public GetCitiesResponse getCities(GetCitiesRequest request) {
-        log.info("Received request: {}", request);
         return citiesService.getCities(request);
     }
 }
