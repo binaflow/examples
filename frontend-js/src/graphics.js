@@ -4,6 +4,7 @@ export default class Graphics {
     worldMapImage = null;
     cities = [];
     maxDistanceInfo = null
+    minPopulation = 1_000_000;
 
     constructor() {
         console.log('Graphics');
@@ -28,7 +29,21 @@ export default class Graphics {
     render() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.worldMapImage, 0, 0, this.canvas.width, this.canvas.height);
+        // Draw in left down corner of the canvas. Text: Min population: 1_000_000. Press <- or -> to change the value.
+        this.ctx.font = "12px Arial";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText(`Press and hold to point on map to fetch cities in a radius`, 10, 22);
+        this.ctx.fillStyle = "black";
+        this.ctx.fillText(`Min population: ${this.minPopulation}. Press ← or → to change the value.`, 10, this.canvas.height - 22);
+        if (this.cities) {
+            this.ctx.fillText(`Last fetch info: Cities: ${this.cities.length}`, 10, this.canvas.height - 10);
+        }
         if (this.maxDistanceInfo) {
+            this.ctx.fillText(`Max distance: ${this.convertPixelsToKilometers(
+                this.maxDistanceInfo.radius,
+                this.maxDistanceInfo.x,
+                this.maxDistanceInfo.y,
+            )}`, 10, this.canvas.height - 34);
             if (!this.maxDistanceInfo.endDownTime) {
                 this.maxDistanceInfo.radius = (Date.now() - this.maxDistanceInfo.startDownTime) / 5;
                 this.ctx.beginPath();
@@ -63,5 +78,15 @@ export default class Graphics {
         const blue = (city.getPopulation() * 7) % 256;
 
         return `rgb(${red}, ${green}, ${blue})`;
+    }
+
+    convertPixelsToKilometers(pixels, offsetX, offsetY) {
+        let latitude = 90 - (offsetY * 180 / this.canvas.height);
+        let distanceLatitude = pixels * 180 / this.canvas.height; // in degrees
+        let distanceLongitude = pixels * 360 / this.canvas.width; // in degrees
+        return Math.min(
+            distanceLatitude * 111, // 1 degree latitude ≈ 111 km
+            distanceLongitude * 111 * Math.cos(latitude * Math.PI / 180) // longitude depends on latitude
+        );
     }
 }

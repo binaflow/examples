@@ -13,7 +13,7 @@ setInterval(() => {
 
 graphics.canvas.onmouseup = (event) => {
     graphics.maxDistanceInfo.endDownTime = Date.now();
-    sendRequest(event.offsetX, event.offsetY, graphics.maxDistanceInfo.radius);
+    sendRequest(graphics.maxDistanceInfo.x, graphics.maxDistanceInfo.y, graphics.maxDistanceInfo.radius);
 }
 
 graphics.canvas.onmousedown = (event) => {
@@ -33,14 +33,8 @@ function sendRequest(offsetX, offsetY, maxDistance) {
     let longitude = (offsetX * 360 / graphics.canvas.width) - 180;
     request.setLatitude(latitude);
     request.setLongitude(longitude);
-    let distanceLatitude = maxDistance * 180 / graphics.canvas.height; // in degrees
-    let distanceLongitude = maxDistance * 360 / graphics.canvas.width; // in degrees
-    let maxDistanceKm = Math.min(
-        distanceLatitude * 111, // 1 degree latitude ≈ 111 km
-        distanceLongitude * 111 * Math.cos(latitude * Math.PI / 180) // longitude depends on latitude
-    );
-    request.setMaxdistance(maxDistanceKm);
-    request.setMinpopulation(1_000_000);
+    request.setMaxdistance(graphics.convertPixelsToKilometers(maxDistance, offsetX, offsetY));
+    request.setMinpopulation(graphics.minPopulation);
     binaFlow.send(request, (response) => {
         if (response.getCitiesList().length === 0) {
             console.log('No cities found');
@@ -54,3 +48,12 @@ function sendRequest(offsetX, offsetY, maxDistance) {
         console.log('Error response', error);
     });
 }
+
+onkeydown = (event) => {
+    if (event.key === 'ArrowLeft') {
+        graphics.minPopulation -= 100_000;
+    }
+    if (event.key === 'ArrowRight') {
+        graphics.minPopulation += 100_000;
+    }
+};
