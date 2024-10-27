@@ -49,15 +49,20 @@ canvas.onmousedown = (event) => {
             const y = (90 - latitude) * (gameHeight / 180);
 
             // Draw the city on the canvas
-            ctx.fillStyle = 'red'; // Choose a color for the cities
-            ctx.fillRect(x, y, 5, 5); // Draw a small square for each city
+            let color = randomColor();
+            ctx.fillStyle = color; // Choose a color for the cities
+            ctx.fillRect(x, y, 2, 2); // Draw a small square for each city
 
             // Draw the name of the city
             ctx.font = "12px Arial";
-            ctx.fillStyle = 'red'; // Choose a color for the city names
+            ctx.fillStyle = color; // Choose a color for the city names
             ctx.fillText(city.getName(), x, y);
         }
     }, (error) => {
         console.log('Error response', error);
     });
+}
+
+function randomColor() {
+    return `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
 }
