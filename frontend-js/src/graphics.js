@@ -3,6 +3,7 @@ export default class Graphics {
     ctx = null;
     worldMapImage = null;
     cities = [];
+    maxDistanceInfo = null
 
     constructor() {
         console.log('Graphics');
@@ -27,6 +28,16 @@ export default class Graphics {
     render() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.worldMapImage, 0, 0, this.canvas.width, this.canvas.height);
+        if (this.maxDistanceInfo) {
+            if (!this.maxDistanceInfo.endDownTime) {
+                this.maxDistanceInfo.radius = (Date.now() - this.maxDistanceInfo.startDownTime) / 5;
+                this.ctx.beginPath();
+                this.ctx.arc(this.maxDistanceInfo.x, this.maxDistanceInfo.y, this.maxDistanceInfo.radius, 0, 2 * Math.PI);
+                this.ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                this.ctx.fill();
+                this.ctx.stroke();
+            }
+        }
         for (let city of this.cities) {
             const latitude = city.getLatitude();
             const longitude = city.getLongitude();
