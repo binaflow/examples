@@ -26,10 +26,18 @@ binaFlow.onOpen = () => {
 binaFlow.connect();
 
 canvas.onmousedown = (event) => {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(event.offsetX, event.offsetY, 5, 5);
+
     let request = new schema.GetCitiesRequest();
     request.setMessagetype("GetCitiesRequest");
-    request.setLatitude(parseFloat(event.offsetY));
-    request.setLongitude(parseFloat(event.offsetX));
+    // Convert canvas coordinates to geographical coordinates (Mercator Projection)
+    let latitude = 90 - (event.offsetY * 180 / gameHeight);
+    let longitude = (event.offsetX * 360 / gameWidth) - 180;
+    request.setLatitude(latitude);
+    request.setLongitude(longitude);
+    request.setMaxdistance(500);
+    request.setMinpopulation(1_000_000);
     binaFlow.send(request, (response) => {
         for (let city of response.getCitiesList()) {
             const latitude = city.getLatitude();
