@@ -1,8 +1,8 @@
-package com.github.binaflow.citiespickerjavaspring;
+package io.github.binaflow.citiespickerjavaspring;
 
-import com.github.binaflow.citiespickerjavaspring.dto.City;
-import com.github.binaflow.citiespickerjavaspring.dto.GetCitiesRequest;
-import com.github.binaflow.citiespickerjavaspring.dto.GetCitiesResponse;
+import io.github.binaflow.citiespickerjavaspring.dto.City;
+import io.github.binaflow.citiespickerjavaspring.dto.GetCitiesRequest;
+import io.github.binaflow.citiespickerjavaspring.dto.GetCitiesResponse;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

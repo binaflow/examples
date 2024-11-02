@@ -5,6 +5,15 @@ export default class Graphics {
     cities = [];
     maxDistanceInfo = null
     minPopulation = 1_000_000;
+    /*
+    startTestingTime: 0,
+    exchangeIteration: 0,
+    fastestExchangeTime: 0,
+    slowestExchangeTime: 0,
+    averageExchangeTime: 0,
+     */
+    binaflowTestData = null;
+    httpTestData = null;
 
     constructor() {
         console.log('Graphics');
@@ -30,9 +39,38 @@ export default class Graphics {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.worldMapImage, 0, 0, this.canvas.width, this.canvas.height);
         // Draw in left down corner of the canvas. Text: Min population: 1_000_000. Press <- or -> to change the value.
-        this.ctx.font = "12px Arial";
-        this.ctx.fillStyle = "white";
-        this.ctx.fillText(`Press and hold to point on map to fetch cities in a radius`, 10, 22);
+        const fontSize = 12;
+        this.ctx.font = fontSize + "px Arial";
+        this.ctx.fillStyle = "black";
+        this.ctx.fillText(`Click and hold to point on map to fetch cities in a radius`, 10, 22);
+        let startHeight = this.canvas.height / 5;
+        this.ctx.fillText(`Press 1 to start "binaflow load test"`, 10, startHeight);
+        this.ctx.fillText(`Press 2 to start "http load test"`, 10, startHeight + fontSize);
+        this.ctx.fillText(`Press 0 to stop any load test"`, 10, startHeight + fontSize * 2);
+        if (this.binaflowTestData.startTestingTime > 0) {
+            this.ctx.fillText(`Binaflow load test:`, 10, startHeight + fontSize * 4);
+            this.ctx.fillText(`Iteration: ${this.binaflowTestData.exchangeIteration}/100`, 10, startHeight + fontSize * 5);
+            if (this.binaflowTestData.endTestingTime > 0) {
+                this.ctx.fillText(`Test time: ${this.binaflowTestData.endTestingTime - this.binaflowTestData.startTestingTime}ms`, 10, startHeight + fontSize * 6);
+            } else {
+                this.ctx.fillText(`Test time: ${Date.now() - this.binaflowTestData.startTestingTime}ms`, 10, startHeight + fontSize * 6);
+            }
+            this.ctx.fillText(`Fastest exchange time: ${this.binaflowTestData.fastestExchangeTime}ms`, 10, startHeight + fontSize * 7);
+            this.ctx.fillText(`Slowest exchange time: ${this.binaflowTestData.slowestExchangeTime}ms`, 10, startHeight + fontSize * 8);
+            this.ctx.fillText(`Average exchange time: ${this.binaflowTestData.averageExchangeTime.toFixed(0)}ms`, 10, startHeight + fontSize * 9);
+        }
+        if (this.httpTestData.startTestingTime > 0) {
+            this.ctx.fillText(`Http load test:`, 10, startHeight + fontSize * 11);
+            this.ctx.fillText(`Iteration: ${this.httpTestData.exchangeIteration}/100`, 10, startHeight + fontSize * 12);
+            if (this.httpTestData.endTestingTime > 0) {
+                this.ctx.fillText(`Test time: ${this.httpTestData.endTestingTime - this.httpTestData.startTestingTime}ms`, 10, startHeight + fontSize * 13);
+            } else {
+                this.ctx.fillText(`Test time: ${Date.now() - this.httpTestData.startTestingTime}ms`, 10, startHeight + fontSize * 13);
+            }
+            this.ctx.fillText(`Fastest exchange time: ${this.httpTestData.fastestExchangeTime}ms`, 10, startHeight + fontSize * 14);
+            this.ctx.fillText(`Slowest exchange time: ${this.httpTestData.slowestExchangeTime}ms`, 10, startHeight + fontSize * 15);
+            this.ctx.fillText(`Average exchange time: ${this.httpTestData.averageExchangeTime.toFixed(0)}ms`, 10, startHeight + fontSize * 16);
+        }
         this.ctx.fillStyle = "black";
         this.ctx.fillText(`Min population: ${this.minPopulation}. Press ← or → to change the value.`, 10, this.canvas.height - 22);
         if (this.cities) {

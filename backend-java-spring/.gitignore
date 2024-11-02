@@ -1,4 +1,4 @@
-src/main/java/com/github/binaflow/citiespickerjavaspring/dto
+src/main/java/io/github/binaflow/citiespickerjavaspring/dto
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

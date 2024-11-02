@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.4</version>
+        <version>3.3.5</version>
         <relativePath/>
     </parent>
     <groupId>com.github.binaflow</groupId>
     <artifactId>cities-picker-java-spring</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.1</version>
     <name>cities-picker-java-spring</name>
     <description>cities-picker-java-spring</description>
     <properties>
@@ -18,13 +18,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.binaflow</groupId>
+            <groupId>io.github.binaflow</groupId>
             <artifactId>binaflow-spring-boot-starter</artifactId>
-            <version>0.0.1</version>
+            <version>0.1.2</version>
         </dependency>
     </dependencies>
 
@@ -37,7 +33,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <id>generate-sources</id>
