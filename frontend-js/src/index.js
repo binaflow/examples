@@ -1,4 +1,4 @@
-import BinaFlow from 'binaflow'
+import BinaFlow from '@binaflow/binaflow-js-client'
 import Graphics from './graphics'
 
 const schema = require('./cities-picker-schema_pb')
